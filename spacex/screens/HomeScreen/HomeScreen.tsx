@@ -13,6 +13,7 @@ export default function HomeScreen() {
       <TopBar />
       <SearchContainer />
       <RocketList />
+
     </SafeAreaView>
 
   );
