@@ -17,7 +17,6 @@ const FilteredSearchScreen = ({route}) => {
     return <Spinner
       visible={loading}
       textContent={'Loading...'}
-      textStyle={styles.spinnerTextStyle}
     />
 
   //TODO show error

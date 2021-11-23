@@ -1,12 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 
-const TopBar = () => {
+const TopBar = ({onTabPressed}) => {
   return (
     <View style={styles.topNavigationBar}>
-      <Ionicons name="reorder-two-outline" size={40} color="black" />
+      <TouchableOpacity onPress={onTabPressed}>
+        <Ionicons name="reorder-two-outline" size={40} color="black" />
+      </TouchableOpacity>
+
       <Text style={styles.topBarText}>Malaysia</Text>
       <Image style={styles.profilePicture} source={require("../../../assets/picture.jpg")}/>
     </View>

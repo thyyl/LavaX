@@ -18,6 +18,10 @@ export default function HomeScreen({navigation}) {
     });
   }
 
+  const onTabPressed = () => {
+    navigation.navigate('PostUser')
+  }
+
   const customClient = new ApolloClient({
     uri: 'https://api.spacex.land/graphql/'
   });
@@ -38,7 +42,7 @@ export default function HomeScreen({navigation}) {
         return (
           <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
-            <TopBar />
+            <TopBar onTabPressed={onTabPressed}/>
             <SearchContainer 
               navigation={navigation}
             />
