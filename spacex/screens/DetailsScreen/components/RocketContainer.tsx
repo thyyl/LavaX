@@ -1,10 +1,26 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
 
-const RocketContainer = () => {
+const RocketContainer = ({id}) => {
+
+  const getImage = () => {
+    switch (id) {
+      case 'falcon1':
+        return require('../../../assets/falcon1.jpeg')
+      case 'falcon9':
+        return require('../../../assets/falcon9.jpeg')
+      case 'falconheavy':
+        return require('../../../assets/falconheavy.jpeg')
+      default:
+        return require('../../../assets/starship.jpeg')
+    }
+  }
+
+  const image = getImage();
+
   return (
     <View style={styles.container}>
-      <Image source={require("../../../assets/falcon1.jpeg")} style={styles.imageContainer}/>
+      <Image source={image} style={styles.imageContainer}/>
     </View>
   )
 }

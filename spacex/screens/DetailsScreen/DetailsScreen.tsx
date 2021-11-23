@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import DetailsContainer from './components/DetailsContainer';
 import RocketContainer from './components/RocketContainer';
+import ErrorScreen from '../ErrorScreen/ErrorScreen';
 
 const DetailsScreen = ({route}) => {
   const { itemId } = route.params;
@@ -20,15 +21,15 @@ const DetailsScreen = ({route}) => {
     return <Spinner
       visible={loading}
       textContent={'Loading...'}
-      textStyle={styles.spinnerTextStyle}
     />
 
-  //TODO show error
+  if (error)
+    return <ErrorScreen />
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-      <RocketContainer />
+      <RocketContainer id={data.rocket.id}/>
       <DetailsContainer rocket={data.rocket}/>
     </SafeAreaView>
   )

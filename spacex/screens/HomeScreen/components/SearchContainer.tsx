@@ -2,16 +2,25 @@ import React, {useState} from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
 import { Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useToast } from "react-native-toast-notifications";
+
 import FilterSearchModal from './FilterSearchModal';
 
 const SearchContainer = ({navigation}) => {
+  const toast = useToast();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [missionName, setMissionName] = useState('');
 
   const onSearch = () => {
-    navigation.navigate('Mission', {
-      missionName: missionName
-    });
+    if (missionName.trim() === "")
+      toast.show("Please enter something");
+    else 
+      navigation.navigate('Mission', {
+        missionName: missionName
+      });
+
+    setMissionName('')
   }
 
   return (

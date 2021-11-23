@@ -1,18 +1,28 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, TextInput, Modal, Pressable } from 'react-native'
-
+import { useToast } from "react-native-toast-notifications";
 
 const FilterSearchModal = ({modalVisible, setModalVisible, navigation}) => {
+  const toast = useToast();
 
   const [rocket, setRocket] = useState('');
   const [year, setYear] = useState('');
 
   const onPress = () => {
-    setModalVisible(!modalVisible);
-    navigation.navigate('Filter', {
-      rocket: rocket,
-      year: year,
-    });
+    if (rocket.trim() === "" || year.trim() === "")
+      toast.show("Please enter something");
+    else if (isNaN(parseInt(year)))
+      toast.show("Year must be a digit");
+    else {
+      setModalVisible(!modalVisible);
+      navigation.navigate('Filter', {
+        rocket: rocket,
+        year: year,
+      });
+    }
+
+    setRocket('');
+    setYear('');
   } 
 
   return (

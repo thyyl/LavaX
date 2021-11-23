@@ -1,23 +1,24 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useToast } from "react-native-toast-notifications";
 
-import { AuthContext } from '../../../context/auth';
+import ErrorScreen from '../../ErrorScreen/ErrorScreen';
 
-const Form = () => {
-  const { user, updateUser } = useContext(AuthContext);
-
+const Form = ({user, updateUser}) => {
   const [name, setName] = useState("");
   const [rocket, setRocket] = useState("");
   const [twitter, setTwitter] = useState("");
+  const toast = useToast();
 
   const [udpateUser, {data, loading, error}] = useMutation(UPDATE_USER, {
     update(_, result) {
       const user = result.data.update_users.returning.find((info) => info.name === name);
       console.log(user.id);
       updateUser(user.id);
+      toast.show("Update Successful");
     }
   });
 
@@ -29,7 +30,8 @@ const Form = () => {
       textContent={'Loading...'}
     />
 
-  // add error
+  if (error)
+    return <ErrorScreen />
 
   return (
     <View style={styled.container}>
@@ -77,6 +79,7 @@ const Form = () => {
       </Pressable>
     </View>
   )
+
 }
 
 const UPDATE_USER = gql` 

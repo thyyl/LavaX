@@ -4,6 +4,7 @@ import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 import uuid from 'react-native-uuid';
+import { useToast } from "react-native-toast-notifications";
 
 import { AuthContext } from '../../../context/auth';
 
@@ -14,6 +15,8 @@ const Form = () => {
   const [rocket, setRocket] = useState("");
   const [twitter, setTwitter] = useState("");
 
+  const toast = useToast();
+
   const id = uuid.v4();
 
   const [addUser, { loading, error}] = useMutation(POST_USER, {
@@ -21,6 +24,7 @@ const Form = () => {
       const user = result.data.insert_users.returning.find((info) => info.name === name);
       console.log(user.id);
       context.createUser(user.id);
+      toast.show("Create Successful");
     }
   });
 

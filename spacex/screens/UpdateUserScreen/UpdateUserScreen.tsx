@@ -1,16 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useContext} from 'react';
 import { StyleSheet, SafeAreaView, Text } from 'react-native'
+
+import { AuthContext } from '../../context/auth';
+import PostUserScreen from '../PostUserScreen/PostUserScreen';
 import Form from './components/Form';
 
 const UpdateUserScreen = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
-      <Text style={styles.titleHeader}>Let's update your details</Text>
-      <Form />
-    </SafeAreaView>
-  )
+  const { user, updateUser } = useContext(AuthContext);
+
+  if (user)
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="auto" />
+        <Text style={styles.titleHeader}>Let's update your details</Text>
+        <Form user={user} updateUser={updateUser}/>
+      </SafeAreaView>
+    )
+  
+  return <PostUserScreen />
 }
 
 const styles = StyleSheet.create({

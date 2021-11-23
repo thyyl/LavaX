@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
-import ApolloClient from 'apollo-boost';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import RocketList from './components/RocketList';
 import SearchContainer from './components/SearchContainer';
 import TopBar from './components/TopBar';
+import ErrorScreen from '../ErrorScreen/ErrorScreen';
 
 export default function HomeScreen({navigation}) {
 
@@ -26,36 +26,28 @@ export default function HomeScreen({navigation}) {
     navigation.navigate('UpdateUser')
   }
 
-  const customClient = new ApolloClient({
-    uri: 'https://api.spacex.land/graphql/'
-  });
+  const { data, loading, error } = useQuery(FETCH_ROCKETS);
+
+  if (loading) 
+    return <Spinner
+      visible={loading}
+      textContent={'Loading...'}
+      textStyle={styles.spinnerTextStyle}
+    />
+
+  if (error)
+    return <ErrorScreen />
 
   return (
-    <Query query={FETCH_ROCKETS} client={customClient}>
-      {({loading, error, data}) => {
-
-        if (loading) 
-          return <Spinner
-            visible={loading}
-            textContent={'Loading...'}
-            textStyle={styles.spinnerTextStyle}
-          />
-
-        //TODO show error
-        
-        return (
-          <SafeAreaView style={styles.container}>
-            <StatusBar style="auto" />
-            <TopBar onTabPressed={onTabPressed} onProfilePress={onProfilePress}/>
-            <SearchContainer 
-              navigation={navigation}
-            />
-            <RocketList rockets={data.rockets} onRocketPressed={onRocketPressed}/>
-          </SafeAreaView>
-        );
-      }}
-    </Query>
-  )
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
+      <TopBar onTabPressed={onTabPressed} onProfilePress={onProfilePress}/>
+      <SearchContainer 
+        navigation={navigation}
+      />
+      <RocketList rockets={data.rockets} onRocketPressed={onRocketPressed}/>
+    </SafeAreaView>
+  );
 }
 
 const FETCH_ROCKETS = gql` {

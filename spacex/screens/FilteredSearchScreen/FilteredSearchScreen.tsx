@@ -5,6 +5,8 @@ import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 import HistoryDetails from './components/HistoryDetails';
+import ErrorScreen from '../ErrorScreen/ErrorScreen';
+import EmptyScreen from '../EmptyScreen/EmptyScreen';
 
 const FilteredSearchScreen = ({route}) => {
   const { rocket, year } = route.params;
@@ -19,13 +21,18 @@ const FilteredSearchScreen = ({route}) => {
       textContent={'Loading...'}
     />
 
-  //TODO show error
+  if (error)
+    return <ErrorScreen />
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <Text style={styles.titleHeader}>Past launches</Text>
-      <HistoryDetails launches={data.launchesPast} />
+      {
+        data.launchesPast.length !== 0 
+        ? <HistoryDetails launches={data.launchesPast} />
+        : <EmptyScreen />
+      }
     </SafeAreaView>
   )
 }

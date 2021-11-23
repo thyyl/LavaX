@@ -7,19 +7,23 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Ionicons } from '@expo/vector-icons';
 
 import MissionList from './components/MissionList';
+import ErrorScreen from '../ErrorScreen/ErrorScreen';
+import EmptyScreen from '../EmptyScreen/EmptyScreen';
 
 const MissionScreen = ({route}) => {
   const { missionName } = route.params;
   const [page, setPage] = useState(0);
 
   const nextPage = () => {
-    setPage(page + 3);
+    if (data.launchesPast.length !== 0 )
+      setPage(page + 3);
   }
 
   const backPage = () => {
-    if (page < 0)
+    if (page < 1)
       return
-    setPage(page - 3);
+    else
+      setPage(page - 3);
   }
 
   const { data, loading, error } = useQuery(GET_MISSION_INFO, {
@@ -30,10 +34,10 @@ const MissionScreen = ({route}) => {
     return <Spinner
       visible={loading}
       textContent={'Loading...'}
-      textStyle={styles.spinnerTextStyle}
     />
 
-  //TODO show error
+  if (error)
+    return <ErrorScreen />
 
   return (
     <SafeAreaView style={styles.container}>
@@ -49,7 +53,11 @@ const MissionScreen = ({route}) => {
           <Ionicons name="chevron-forward-outline" size={30} color="black"/>
         </TouchableOpacity>
       </View>
-      <MissionList launches={data.launchesPast} page={page}/>
+      {
+        data.launchesPast.length !== 0 
+        ? <MissionList launches={data.launchesPast} />
+        : <EmptyScreen />
+      }
     </SafeAreaView>
   )
 }
