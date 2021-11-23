@@ -1,18 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 import uuid from 'react-native-uuid';
 
+import { AuthContext } from '../../../context/auth';
+
 const Form = () => {
+  const context = useContext(AuthContext);
+
   const [name, setName] = useState("");
   const [rocket, setRocket] = useState("");
   const [twitter, setTwitter] = useState("");
 
   const id = uuid.v4();
 
-  const [addUser, {data, loading, error}] = useMutation(POST_USER);
+  const [addUser, { loading, error}] = useMutation(POST_USER, {
+    update(_, result) {
+      const user = result.data.insert_users.returning.find((info) => info.name === name);
+      console.log(user.id);
+      context.createUser(user.id);
+    }
+  });
 
   if (loading) 
     return <Spinner
@@ -21,8 +31,6 @@ const Form = () => {
     />
 
   // add error
-
-  console.log(data);
 
   return (
     <View style={styled.container}>

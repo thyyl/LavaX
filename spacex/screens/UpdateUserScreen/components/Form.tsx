@@ -1,17 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import { AuthContext } from '../../../context/auth';
+
 const Form = () => {
+  const { user, updateUser } = useContext(AuthContext);
+
   const [name, setName] = useState("");
   const [rocket, setRocket] = useState("");
   const [twitter, setTwitter] = useState("");
 
-  const [udpateUser, {data, loading, error}] = useMutation(UPDATE_USER);
+  const [udpateUser, {data, loading, error}] = useMutation(UPDATE_USER, {
+    update(_, result) {
+      const user = result.data.update_users.returning.find((info) => info.name === name);
+      console.log(user.id);
+      updateUser(user.id);
+    }
+  });
 
-  const id = "1200de08-1514-468c-8c4c-91afb99fa8bd";
+  const userID = user.id;
 
   if (loading) 
     return <Spinner
@@ -20,8 +30,6 @@ const Form = () => {
     />
 
   // add error
-
-  console.log(data)
 
   return (
     <View style={styled.container}>
@@ -63,7 +71,7 @@ const Form = () => {
 
       <Pressable
         style={styled.button}
-        onPress={() => udpateUser({ variables: { id, name, rocket, twitter } })}
+        onPress={() => udpateUser({ variables: { userID, name, rocket, twitter } })}
       > 
         <Text style={styled.buttonText}>Welcome to SpaceX</Text>
       </Pressable>
@@ -72,8 +80,8 @@ const Form = () => {
 }
 
 const UPDATE_USER = gql` 
-  mutation UPDATE_USER($id: uuid!, $name: String!, $rocket: String!, $twitter: String!) {
-    update_users(where: {id: {_eq: $id}}, _set: {name: $name, rocket: $rocket, twitter: $twitter}) {
+  mutation UPDATE_USER($userID: uuid!, $name: String!, $rocket: String!, $twitter: String!) {
+    update_users(where: {id: {_eq: $userID}}, _set: {name: $name, rocket: $rocket, twitter: $twitter}) {
       returning {
         id
         rocket
@@ -81,7 +89,7 @@ const UPDATE_USER = gql`
         twitter
       }
     }
-  }
+}
 `;
 
 const styled = StyleSheet.create({
