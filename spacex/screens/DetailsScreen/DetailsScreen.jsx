@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const GET_ROCKET_INFO = gql`
-    query GET_ROCKET_INFO($itemId: ID!) {
+  query GET_ROCKET_INFO($itemId: ID!) {
     rocket(id: $itemId) {
       description
       diameter {

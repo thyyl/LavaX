@@ -1,21 +1,32 @@
-import React from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native'
+import React, {useState} from 'react';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
 import { Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import FilterSearchModal from './FilterSearchModal';
 
-const SearchContainer = () => {
+const SearchContainer = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styled.container}>
+      
+      <FilterSearchModal 
+        modalVisible={modalVisible} 
+        setModalVisible={setModalVisible} 
+        navigation={navigation}
+      />
+      
       <Text style={styled.titleHeader}>Let's find a rocket for you</Text>
       <View style={styled.inputContainer}>
         <Ionicons name="search-outline" size={20} color="black" />
         <TextInput
           style={styled.input}
           selectionColor={'black'}
-          placeholder={'Search a rocket here!'}
+          placeholder={'Search past launches here!'}
         />
-        <Ionicons name="options-outline" size={25} color='black' style={{marginLeft: 30}} />
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Ionicons name="options-outline" size={25} color='black' style={{marginLeft: 30}} />
+        </TouchableOpacity>
       </View>
 
     </View>

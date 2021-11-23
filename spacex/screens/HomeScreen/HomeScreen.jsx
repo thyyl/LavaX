@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -12,9 +12,9 @@ import TopBar from './components/TopBar';
 
 export default function HomeScreen({navigation}) {
 
-  onRocketPressed = (id) => {
+  const onRocketPressed = (id) => {
     navigation.navigate('Details', {
-      itemId: id,
+      itemId: id
     });
   }
 
@@ -39,7 +39,9 @@ export default function HomeScreen({navigation}) {
           <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
             <TopBar />
-            <SearchContainer />
+            <SearchContainer 
+              navigation={navigation}
+            />
             <RocketList rockets={data.rockets} onRocketPressed={onRocketPressed}/>
           </SafeAreaView>
         );
@@ -49,7 +51,7 @@ export default function HomeScreen({navigation}) {
 }
 
 const FETCH_ROCKETS = gql` {
-  rockets(limit: 2) {
+  rockets {
     active
     country
     id
