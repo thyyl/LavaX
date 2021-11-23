@@ -48,8 +48,7 @@ export default function HomeScreen({navigation}) {
   )
 }
 
-const FETCH_ROCKETS = gql`
-{
+const FETCH_ROCKETS = gql` {
   rockets(limit: 2) {
     active
     country

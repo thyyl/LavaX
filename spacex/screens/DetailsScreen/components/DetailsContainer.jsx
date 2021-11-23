@@ -30,7 +30,7 @@ const DetailsContainer = ({rocket}) => {
       </View>
 
       {select === "Overall" && <OverallDetails rocket={rocket}/>}
-      {select === "History" && <HistoryDetails rocket={rocket}/>}
+      {select === "History" && <HistoryDetails rocketName={rocket.name}/>}
     </View>
   )
 }

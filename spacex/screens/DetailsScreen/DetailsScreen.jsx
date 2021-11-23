@@ -62,6 +62,7 @@ const GET_ROCKET_INFO = gql`
         number
         layout
       }
+      id
     }
   }
 `;

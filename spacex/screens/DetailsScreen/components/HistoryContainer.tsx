@@ -1,22 +1,34 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-const HistoryContainer = () => {
+const HistoryContainer = ({launches}) => {
+  const handleClick = () => {
+    Linking.canOpenURL(launches.links.article_link).then(supported => {
+      if (supported) {
+        Linking.openURL(launches.links.article_link);
+      } else {
+        console.log("Don't know how to open URI: " + launches.links.article_link);
+      }
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.missionName}>
-        Starlink-10 (v1.0) & SkySat 19-21
+        {launches.mission_name}
       </Text>
       <Text style={styles.missionDate}>
-        2020-08-18
+        {launches.launch_date_utc.substr(0, 10)}
       </Text>
 
       <View style={styles.viewMoreContainer}>
         <Text style={styles.learnMoreText}>Click here to learn more!</Text>
-        <View style={styles.nextContainer}>
-          <Ionicons name="chevron-forward-outline" size={25} color="black" />
-        </View>
+        <TouchableOpacity onPress={handleClick}>
+          <View style={styles.nextContainer}>
+            <Ionicons name="chevron-forward-outline" size={25} color="black" />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -24,12 +36,13 @@ const HistoryContainer = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
+    height: 175,
     width: '100%',
     justifyContent: 'flex-start',
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 20,
+    marginBottom: 20,
   },
   missionName: {
     fontSize: 20,
