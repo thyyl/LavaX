@@ -1,14 +1,14 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 
-const RocketContainer = () => {
+const RocketContainer = ({rocket}) => {
   return (
     <View style={styled.container}>
       <Image source={require("../../../assets/falcon1.jpeg")} style={styled.imageContainer}/>
       <View style={styled.rocketDetailsColumn}>
-        <Text style={styled.rocketName}>Falcon 1</Text>
-        <Text style={{marginTop: 20}}>United States of America</Text>
-        <Text>Current Status: Active</Text>
+        <Text style={styled.rocketName}>{rocket.name}</Text>
+        <Text style={{marginTop: 20}}>{rocket.country}</Text>
+        <Text>Current Status: {rocket.active ? 'Active' : 'Inactive'}</Text>
       </View>
     </View>
   )
@@ -22,7 +22,7 @@ const styled = StyleSheet.create({
     height: 150,
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 20,
+    marginTop: 30,
     alignItems: 'center',
     justifyContent: 'space-between',
   },

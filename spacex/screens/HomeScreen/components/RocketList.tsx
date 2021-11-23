@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, StyleSheet, Text, ScrollView } from 'react-native'
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native'
 import RocketContainer from './RocketContainer'
 
-const RocketList = () => {
+const RocketList = ({rockets, onRocketPressed}) => {
   return (
     <View style={styled.container}>
       <Text style={styled.headerText}>Popular Rockets</Text>
@@ -13,9 +13,14 @@ const RocketList = () => {
         bounces={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        
-        <RocketContainer />
-        <RocketContainer />
+
+        { rockets && rockets.map(
+          (rocket) => 
+          <TouchableOpacity onPress={() => onRocketPressed(rocket.id)} key={rocket.id}>
+            <RocketContainer rocket={rocket} />
+          </TouchableOpacity>
+          )
+        }
       </ScrollView>
     </View>
   )

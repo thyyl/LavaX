@@ -4,9 +4,9 @@ import { Text, StyleSheet, SafeAreaView, View } from 'react-native'
 
 import LoginForm from './components/LoginForm';
 
-const LoginScreen = ({navigation} : {navigation: any}) => {
+const LoginScreen = ({navigation}) => {
   const NavigateToRegister = () => {
-    navigation.navigate('Register')
+    navigation.navigate('Home')
   }
 
   return (

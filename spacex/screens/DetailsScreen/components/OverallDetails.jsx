@@ -2,39 +2,40 @@ import React from 'react'
 import { View, StyleSheet, Text, ScrollView } from 'react-native'
 import EngineContainer from './EngineContainer';
 
-const OverallDetails = () => {
+const OverallDetails = ({rocket}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} >
       <View style={styles.container}>
         <Text style={styles.description}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic 
+          {rocket.description}
         </Text>
 
         <View style={styles.traitsRow}>
           <View style={styles.traitsContainer}>
-            <Text style={styles.traitsText}>300m</Text>
+            <Text style={styles.traitsText}>{rocket.height.meters} m</Text>
             <Text style={styles.traitsCategory}>Height</Text>
           </View>
 
           <View style={styles.verticleLine} ></View>
 
           <View style={styles.traitsContainer}>
-            <Text style={styles.traitsText}>50m</Text>
+            <Text style={styles.traitsText}>{rocket.diameter.meters} m</Text>
             <Text style={styles.traitsCategory}>Diameter</Text>
           </View>
 
           <View style={styles.verticleLine}></View>
 
           <View style={styles.traitsContainer}>
-            <Text style={styles.traitsText}>100kg</Text>
+            <Text style={styles.traitsText}>{rocket.mass.kg} kg</Text>
             <Text style={styles.traitsCategory}>Mass</Text>
           </View>
         </View>
 
         <ScrollView style={styles.categoryRow} horizontal={true} showsHorizontalScrollIndicator={false}>
-          <EngineContainer />
-          <EngineContainer />
-          <EngineContainer />
+          <EngineContainer engine={rocket.engines.type} type="Type" />
+          <EngineContainer engine={rocket.engines.version} type="Version" />
+          <EngineContainer engine={rocket.engines.number} type="Number" />
+          <EngineContainer engine={rocket.engines.layout} type="Layoutr" />
         </ScrollView>
       </View>
     </ScrollView>
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 30,
+    marginTop: 10,
   },
   traitsContainer: {
     width: '33%',

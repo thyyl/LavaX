@@ -2,6 +2,8 @@ import React from 'react'
 import { View, TextInput, StyleSheet, Text, Pressable } from 'react-native'
 import { Formik } from 'formik';
 import * as Yup from "yup";
+import gql from 'graphql-tag';
+
 
 const LoginForm = () => {
   const LoginSchema = Yup.object().shape({
@@ -10,13 +12,13 @@ const LoginForm = () => {
       .required("Please enter an email"),
     password: Yup.string().required("Please enter your password"),
   });
-
+  
   return (
     <Formik 
       initialValues={{ email: '', password: '' }} 
       validationSchema={LoginSchema}
       onSubmit={values => console.log(values)}
-    >
+    > 
        {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
          <View style={styles.container}>
            <View style={styles.inputContainer}>
@@ -66,6 +68,15 @@ const LoginForm = () => {
     </Formik>
   )
 }
+
+const LOGIN_USER = gql`
+  query login($email: String!, $email: String!) {
+    validate(email: $email password: $email) {
+      userID
+      email
+    }
+  }
+`;
 
 const styles = StyleSheet.create({
   container: {

@@ -2,12 +2,12 @@ import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-const EngineContainer = () => {
+const EngineContainer = ({engine, type}) => {
   return (
     <View style={styles.categoryContainer}>
       <Ionicons name="rocket-outline" size={25} color="grey" style={{'marginBottom': 5}}/>
-      <Text style={styles.categoryTraits}>Merlin</Text>
-      <Text style={styles.categoryText}>Type</Text>
+      <Text style={styles.categoryTraits}>{engine}</Text>
+      <Text style={styles.categoryText}>{type}</Text>
     </View>
   )
 }

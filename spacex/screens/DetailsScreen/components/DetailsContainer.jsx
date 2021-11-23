@@ -4,16 +4,16 @@ import { View, StyleSheet, Text, Pressable } from 'react-native'
 import HistoryDetails from './HistoryDetails';
 import OverallDetails from './OverallDetails';
 
-const DetailsContainer = () => {
+const DetailsContainer = ({rocket}) => {
   const [select, setSelect] = useState("Overall");
 
-  const onSelectChange = (newSelect: string) => {
+  const onSelectChange = (newSelect) => {
     setSelect(newSelect);
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.rocketName}>Falcon 1</Text>
+      <Text style={styles.rocketName}>{rocket.name}</Text>
 
       <View style={styles.selectionTab}>
         <Pressable 
@@ -29,8 +29,8 @@ const DetailsContainer = () => {
         </Pressable>
       </View>
 
-      {select === "Overall" && <OverallDetails />}
-      {select === "History" && <HistoryDetails />}
+      {select === "Overall" && <OverallDetails rocket={rocket}/>}
+      {select === "History" && <HistoryDetails rocket={rocket}/>}
     </View>
   )
 }

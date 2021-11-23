@@ -15,7 +15,7 @@ export class UsersResolver {
     return this.usersService.getUser(getUserArgs);
   }
 
-  @Query(() => User, {name: 'validate'})
+  @Mutation(() => User, {name: 'validate'})
   validateUser(@Args() validateUserArgs: ValidateUser): User {
     return this.usersService.validateUser(validateUserArgs)
   }
