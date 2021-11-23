@@ -22,6 +22,10 @@ export default function HomeScreen({navigation}) {
     navigation.navigate('PostUser')
   }
 
+  const onProfilePress = () => {
+    navigation.navigate('UpdateUser')
+  }
+
   const customClient = new ApolloClient({
     uri: 'https://api.spacex.land/graphql/'
   });
@@ -42,7 +46,7 @@ export default function HomeScreen({navigation}) {
         return (
           <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
-            <TopBar onTabPressed={onTabPressed}/>
+            <TopBar onTabPressed={onTabPressed} onProfilePress={onProfilePress}/>
             <SearchContainer 
               navigation={navigation}
             />

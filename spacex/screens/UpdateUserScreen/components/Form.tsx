@@ -3,16 +3,15 @@ import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
-import uuid from 'react-native-uuid';
 
 const Form = () => {
   const [name, setName] = useState("");
   const [rocket, setRocket] = useState("");
   const [twitter, setTwitter] = useState("");
 
-  const id = uuid.v4();
+  const [udpateUser, {data, loading, error}] = useMutation(UPDATE_USER);
 
-  const [addUser, {data, loading, error}] = useMutation(POST_USER);
+  const id = "1200de08-1514-468c-8c4c-91afb99fa8bd";
 
   if (loading) 
     return <Spinner
@@ -22,7 +21,7 @@ const Form = () => {
 
   // add error
 
-  console.log(data);
+  console.log(data)
 
   return (
     <View style={styled.container}>
@@ -64,7 +63,7 @@ const Form = () => {
 
       <Pressable
         style={styled.button}
-        onPress={() => addUser({ variables: { id, name, rocket, twitter } })}
+        onPress={() => udpateUser({ variables: { id, name, rocket, twitter } })}
       > 
         <Text style={styled.buttonText}>Welcome to SpaceX</Text>
       </Pressable>
@@ -72,14 +71,13 @@ const Form = () => {
   )
 }
 
-const POST_USER = gql` 
-  mutation POST_USER($id: uuid!, $name: String!, $rocket: String!, $twitter: String!) {
-    insert_users(objects: {name: $name, rocket: $rocket, twitter: $twitter, id: $id}) {
+const UPDATE_USER = gql` 
+  mutation UPDATE_USER($id: uuid!, $name: String!, $rocket: String!, $twitter: String!) {
+    update_users(where: {id: {_eq: $id}}, _set: {name: $name, rocket: $rocket, twitter: $twitter}) {
       returning {
         id
-        name
         rocket
-        timestamp
+        name
         twitter
       }
     }

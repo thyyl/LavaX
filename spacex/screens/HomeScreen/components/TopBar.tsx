@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 
-const TopBar = ({onTabPressed}) => {
+const TopBar = ({onTabPressed, onProfilePress}) => {
   return (
     <View style={styles.topNavigationBar}>
       <TouchableOpacity onPress={onTabPressed}>
@@ -11,7 +11,10 @@ const TopBar = ({onTabPressed}) => {
       </TouchableOpacity>
 
       <Text style={styles.topBarText}>Malaysia</Text>
-      <Image style={styles.profilePicture} source={require("../../../assets/picture.jpg")}/>
+      
+      <TouchableOpacity onPress={onProfilePress}>
+        <Image style={styles.profilePicture} source={require("../../../assets/picture.jpg")}/>
+      </TouchableOpacity>
     </View>
   );
 }
