@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';

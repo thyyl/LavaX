@@ -6,6 +6,13 @@ import FilterSearchModal from './FilterSearchModal';
 
 const SearchContainer = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [missionName, setMissionName] = useState('');
+
+  const onSearch = () => {
+    navigation.navigate('Mission', {
+      missionName: missionName
+    });
+  }
 
   return (
     <View style={styled.container}>
@@ -23,6 +30,9 @@ const SearchContainer = ({navigation}) => {
           style={styled.input}
           selectionColor={'black'}
           placeholder={'Search past launches here!'}
+          onChangeText={missionName => setMissionName(missionName)}
+          defaultValue={missionName}
+          onSubmitEditing={onSearch}
         />
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Ionicons name="options-outline" size={25} color='black' style={{marginLeft: 30}} />

@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen/HomeScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
 import FilteredSearchScreen from './screens/FilteredSearchScreen/FilteredSearchScreen';
+import MissionScreen from './screens/MissionScreen/MissionScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function App() {
           <HomeStack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}}/>
           <HomeStack.Screen name='Details' component={DetailsScreen} options={{headerShown: false}}/>
           <HomeStack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
+          <HomeStack.Screen name='Mission' component={MissionScreen} options={{headerShown: false}}/>
         </HomeStack.Navigator>
       </ApolloProvider>
     </NavigationContainer>
