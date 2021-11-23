@@ -32,7 +32,6 @@ export default function HomeScreen({navigation}) {
     return <Spinner
       visible={loading}
       textContent={'Loading...'}
-      textStyle={styles.spinnerTextStyle}
     />
 
   if (error)
