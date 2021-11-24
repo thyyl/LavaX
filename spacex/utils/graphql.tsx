@@ -161,6 +161,7 @@ const DELETE_POST = gql`
 const CREATE_POST = gql`
   mutation CREATE_POST($user: String!, $title: String!, $description: String!){
     createPost(createPostData: {userID: $user, title: $title, description: $description}) {
+      postID
       userID
       title
       description

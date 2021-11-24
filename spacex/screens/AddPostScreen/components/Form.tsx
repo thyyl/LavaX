@@ -6,10 +6,12 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { useToast } from "react-native-toast-notifications";
 
 import { LocalAuthContext } from '../../../context/localAuth';
+import { PostContext } from '../../../context/post';
 import { CREATE_POST } from '../../../utils/graphql';
 
 const Form = () => {
   const {user} = useContext(LocalAuthContext);
+  const {createPost} = useContext(PostContext);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -22,7 +24,8 @@ const Form = () => {
 
   const [addUser, { loading }] = useMutation(CREATE_POST, {
     update(_, result) {
-      console.log(result)
+      const newPost = result.data.createPost;
+      createPost(newPost);
       toast.show("Create Successful");
     },
     client: client

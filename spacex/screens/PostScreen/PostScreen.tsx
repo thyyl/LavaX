@@ -11,6 +11,7 @@ import EmptyScreen from '../EmptyScreen/EmptyScreen';
 import PostList from './components/PostList';
 
 const PostScreen = ({navigation}) => {
+
   const client = new ApolloClient<{}>({
     uri: 'http://192.168.0.169:3000/graphql',
   })

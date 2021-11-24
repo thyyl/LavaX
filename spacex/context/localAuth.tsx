@@ -2,7 +2,7 @@ import React, { useReducer, createContext } from "react";
 
 const LocalAuthContext = createContext({
   user: null,
-  createUser: (data) => {},
+  createUser: (data: string) => {},
   removeUser: () => {},
 })
 
@@ -25,7 +25,7 @@ function localAuthReducer(state, action) {
 function LocalAuthProvider(props) {
   const [state, dispatch] = useReducer(localAuthReducer, { user: null });
 
-  function createUser(data) {
+  function createUser(data: string) {
     dispatch({
       type: 'CREATE',
       payload: data

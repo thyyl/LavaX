@@ -2,8 +2,8 @@ import React, { useReducer, createContext } from "react";
 
 const AuthContext = createContext({
   user: null,
-  createUser: (data) => {},
-  updateUser: (data) => {},
+  createUser: (data: string) => {},
+  updateUser: (data: string) => {},
   removeUser: () => {},
 })
 
@@ -32,14 +32,14 @@ function authReducer(state, action) {
 function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, { user: null });
 
-  function createUser(data) {
+  function createUser(data: string) {
     dispatch({
       type: 'CREATE',
       payload: data
     })
   }
 
-  function updateUser(data) {
+  function updateUser(data: string) {
     dispatch({
       type: 'UPDATE',
       payload: data

@@ -1,14 +1,25 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
+
+import { PostContext } from '../../../context/post';
+
 import { PostInterface } from '../../../interface/postInterface';
 import Post from './Post'
 
 const PostList = ({postsData}) => {
+  const {post, removePost} = useContext(PostContext)
   const [posts, setPosts] = useState([]);
+
 
   useEffect(() => {
     setPosts(postsData);
   }, []);
+
+  useEffect(() => {
+    post && console.log(post)
+    post && setPosts([...posts, post]);
+    removePost();
+  }, [post])
 
   useEffect(() => {
 
