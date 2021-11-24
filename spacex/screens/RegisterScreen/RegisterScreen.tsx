@@ -4,6 +4,7 @@ import { Text, StyleSheet, SafeAreaView, View, Pressable } from 'react-native'
 import RegisterForm from './components/RegisterForm';
 
 const RegisterScreen = ({navigation} : {navigation: any}) => {
+  
   const NavigateToLogin = () => {
     navigation.replace('Login')
   }
@@ -14,7 +15,7 @@ const RegisterScreen = ({navigation} : {navigation: any}) => {
       <Text style={styles.welcomeText}>Rocket away!</Text>
       <Text style={styles.signUpText}>Create and account to catch up with your all-time favourite SpaceX rockets</Text>
 
-      <RegisterForm />
+      <RegisterForm navigation={navigation}/>
       
       <View style={styles.bottomView}>
         <Text style={styles.bottomText}>Already have an account? </Text>

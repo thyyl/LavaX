@@ -18,17 +18,17 @@ import UpdateUserScreen from './screens/UpdateUserScreen/UpdateUserScreen';
 
 const HomeStack = createStackNavigator();
 
-const client = new ApolloClient({
+const spaceX = new ApolloClient({
   uri: 'https://api.spacex.land/graphql/',
 })
 
-
 export default function App() {
+
   return (
     <NavigationContainer>
       <AuthProvider>
         <ToastProvider>
-          <ApolloProvider client={client}>
+          <ApolloProvider client={spaceX} >
             <HomeStack.Navigator initialRouteName="Login">  
               <HomeStack.Screen name='Login' component={LoginScreen} options={{headerShown: false}}/>
               <HomeStack.Screen name='Filter' component={FilteredSearchScreen} options={{headerShown: false}}/>

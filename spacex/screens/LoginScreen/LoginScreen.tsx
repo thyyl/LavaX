@@ -5,8 +5,9 @@ import { Text, StyleSheet, SafeAreaView, View } from 'react-native'
 import LoginForm from './components/LoginForm';
 
 const LoginScreen = ({navigation}) => {
+
   const NavigateToRegister = () => {
-    navigation.navigate('Home')
+    navigation.navigate('Register');
   }
 
   return (
@@ -15,7 +16,7 @@ const LoginScreen = ({navigation}) => {
       <Text style={styles.welcomeBackText}>Welcome back!</Text>
       <Text style={styles.signInText}>Sign in to your account</Text>
 
-      <LoginForm />
+      <LoginForm navigation={navigation}/>
       
       <View style={styles.bottomView}>
         <Text style={styles.bottomText}>Don't have an account? </Text>
