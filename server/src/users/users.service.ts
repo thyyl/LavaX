@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import e from "cors";
 import { v4 as uuidv4 } from 'uuid';
 import { GetUserArgs } from "./dto/args/get-user.args";
 import { ValidateUser } from "./dto/args/validate-user.args";
@@ -55,8 +54,6 @@ export class UsersService {
         }
       })
     }
-
-    return null;
   }
 
 }
