@@ -8,19 +8,17 @@ import HistoryContainer from './HistoryContainer'
 
 const HistoryDetails = ({rocketName}) => {
 
-  const { data, loading, error } = useQuery(GET_PAST_HISTORIES);
+  const { data, loading } = useQuery(GET_PAST_HISTORIES);
   let filteredData;
 
   if (loading) 
     return <Spinner
       visible={loading}
       textContent={'Loading...'}
-      textStyle={styles.spinnerTextStyle}
     />
 
   if (data) {
-    filteredData = data.launchesPast.filter((info) => info.rocket.rocket_name === rocketName)
-    console.log(filteredData)
+    filteredData = data && data.launchesPast.filter((info) => info.rocket.rocket_name === rocketName)
   }
   
   return (

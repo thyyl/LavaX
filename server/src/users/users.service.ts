@@ -42,6 +42,18 @@ export class UsersService {
 
     if (user && user.password === validateUserArgs.password) {
       return user;
+    } else if (user.password !== validateUserArgs.password) {
+      throw new UserInputError('Wrong credentials is taken', {
+        errors: {
+          userID: 'Wrong password',
+        }
+      })
+    } else {
+      throw new UserInputError('User does not exist', {
+        errors: {
+          userID: 'Wrong email',
+        }
+      })
     }
 
     return null;

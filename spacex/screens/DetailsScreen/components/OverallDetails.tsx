@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: 20,
   },
   traitsContainer: {
     width: '33%',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   traitsText: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 17.5,
     color: 'black',
     marginBottom: 5,
   },

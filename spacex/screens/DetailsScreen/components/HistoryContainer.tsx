@@ -1,20 +1,19 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
+import { useToast } from "react-native-toast-notifications";
+
+import { validateArticle } from '../../../utils/validateArticle';
 
 const HistoryContainer = ({launches}) => {
+  const toast = useToast();
+
   const handleClick = () => {
-    Linking.canOpenURL(launches.links.article_link).then(supported => {
-      if (supported) {
-        Linking.openURL(launches.links.article_link);
-      } else {
-        console.log("Don't know how to open URI: " + launches.links.article_link);
-      }
-    });
+    validateArticle(launches.links.article_link, toast);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={ launches.mission_name.length > 25 ? styles.longContainer : styles.container}>
       <Text style={styles.missionName}>
         {launches.mission_name}
       </Text>
@@ -37,6 +36,15 @@ const HistoryContainer = ({launches}) => {
 const styles = StyleSheet.create({
   container: {
     height: 175,
+    width: '100%',
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 20,
+  },
+  longContainer: {
+    height: 190,
     width: '100%',
     justifyContent: 'flex-start',
     backgroundColor: '#fff',

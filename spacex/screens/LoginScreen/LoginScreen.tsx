@@ -1,18 +1,39 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { Text, StyleSheet, SafeAreaView, View } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginForm from './components/LoginForm';
+import FirstLoginMessage from './components/FirstLoginMessage';
 
 const LoginScreen = ({navigation}) => {
+  const [showModal, setshowModal] = useState(false);
 
   const NavigateToRegister = () => {
     navigation.navigate('Register');
   }
 
+  useEffect(() => {
+    const checkFirstOpen = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@first');
+        
+        if (!jsonValue) {
+          setshowModal(true);
+          await AsyncStorage.setItem('@first', "opened");
+        } 
+      } catch(e) {
+      }
+    }
+    
+    checkFirstOpen()
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
+
+      <FirstLoginMessage showModal={showModal} setShowModal={setshowModal}/>
       <Text style={styles.welcomeBackText}>Welcome back!</Text>
       <Text style={styles.signInText}>Sign in to your account</Text>
 

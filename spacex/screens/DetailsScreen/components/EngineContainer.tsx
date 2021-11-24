@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   categoryTraits: {
     color: '#1b2763',
-    fontSize: 20,
+    fontSize: 17.5,
     fontWeight: 'bold'
   },
   categoryText: {

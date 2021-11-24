@@ -41,9 +41,7 @@ export default function HomeScreen({navigation}) {
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <TopBar onTabPressed={onTabPressed} onProfilePress={onProfilePress}/>
-      <SearchContainer 
-        navigation={navigation}
-      />
+      <SearchContainer navigation={navigation} />
       <RocketList rockets={data.rockets} onRocketPressed={onRocketPressed}/>
     </SafeAreaView>
   );
