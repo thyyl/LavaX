@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, Pressable } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import LottieView from 'lottie-react-native';
 
 const ErrorScreen = () => {

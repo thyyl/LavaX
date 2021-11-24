@@ -6,6 +6,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { useToast } from "react-native-toast-notifications";
 
 import ErrorScreen from '../../ErrorScreen/ErrorScreen';
+import { UPDATE_USER } from '../../../utils/graphql';
+import { UserInterface } from '../../../interface/userInterface';
 
 const Form = ({user, updateUser}) => {
   const [name, setName] = useState("");
@@ -16,7 +18,10 @@ const Form = ({user, updateUser}) => {
 
   const [graphqlUpdate, { loading, error}] = useMutation(UPDATE_USER, {
     update(_, result) {
-      const user = result.data.update_users.returning.find((info) => info.name === name);
+      const user = result
+        .data.update_users
+        .returning
+        .find((info: UserInterface) => info.name === name);
       console.log(user.id);
       updateUser(user.id);
       toast.show("Update Successful");
@@ -89,19 +94,6 @@ const Form = ({user, updateUser}) => {
   )
 
 }
-
-const UPDATE_USER = gql` 
-  mutation UPDATE_USER($userID: uuid!, $name: String!, $rocket: String!, $twitter: String!) {
-    update_users(where: {id: {_eq: $userID}}, _set: {name: $name, rocket: $rocket, twitter: $twitter}) {
-      returning {
-        id
-        rocket
-        name
-        twitter
-      }
-    }
-}
-`;
 
 const styled = StyleSheet.create({
   container: {

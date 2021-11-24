@@ -1,18 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity } from 'react-native'
 import { useQuery } from 'react-apollo';
-import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Ionicons } from '@expo/vector-icons';
 
 import MissionList from './components/MissionList';
 import ErrorScreen from '../ErrorScreen/ErrorScreen';
 import EmptyScreen from '../EmptyScreen/EmptyScreen';
+import { GET_MISSION_INFO } from '../../utils/graphql';
+import FilterSearchModal from './components/FilterSearchModal';
 
 const MissionScreen = ({route}) => {
   const { missionName } = route.params;
   const [page, setPage] = useState(0);
+  // const [modalVisible, setModalVisible] = useState(false);
 
   const nextPage = () => {
     if (data.launchesPast.length !== 0 )
@@ -27,7 +29,7 @@ const MissionScreen = ({route}) => {
   }
 
   const { data, loading, error } = useQuery(GET_MISSION_INFO, {
-    variables: { missionName, page }
+    variables: { missionName, page },
   });
 
   if (loading) 
@@ -42,6 +44,7 @@ const MissionScreen = ({route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
+
       <View style={styles.titleRow}>
         <TouchableOpacity onPress={backPage}>
           <Ionicons name="chevron-back-outline" size={30} color="black"/>
@@ -53,6 +56,11 @@ const MissionScreen = ({route}) => {
           <Ionicons name="chevron-forward-outline" size={30} color="black"/>
         </TouchableOpacity>
       </View>
+
+      {/* <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles.filterText}>Filter</Text>
+      </TouchableOpacity> */}
+
       {
         data.launchesPast.length !== 0 
         ? <MissionList launches={data.launchesPast} />
@@ -75,6 +83,12 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "700",
   },
+  filterText: {
+    color: 'black',
+    fontSize: 17.5,
+    fontWeight: 'bold',
+    marginLeft: 20,
+  },
   titleRow: {
     width: '100%',
     flexDirection: 'row',
@@ -84,21 +98,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const GET_MISSION_INFO = gql` 
-  query GET_MISSION_INFO($missionName: String!, $page: Int!) {
-    launchesPast(limit: 3, offset: $page, find: {mission_name: $missionName}) {
-      mission_name
-      links {
-        article_link
-      }
-      launch_date_utc
-      rocket {
-        rocket_name
-      }
-      id
-    }
-  }
-`;
 
 
 export default MissionScreen

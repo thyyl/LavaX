@@ -1,12 +1,13 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
+import { Launch } from '../../../interface/launchInterface'
 import MissionContainer from './MissionContainer'
 
 const MissionList = ({launches}) => {
   return (
     <ScrollView style={styles.container}>
       {
-        launches.map((launch) => {
+        launches.map((launch: Launch) => {
           return (
             <MissionContainer key={launch.id} launch={launch} />
           )

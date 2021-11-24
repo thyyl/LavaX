@@ -17,8 +17,8 @@ export class PostsResolver {
   }
 
   @Query(() => [Post], { name: 'posts', nullable: true})
-  getPosts(@Args() getAllPostArgs: GetAllPostArgs): Post[] {
-    return this.postsService.getPosts(getAllPostArgs);
+  getPosts(): Post[] {
+    return this.postsService.getPosts();
   }
 
   @Mutation(() => Post)

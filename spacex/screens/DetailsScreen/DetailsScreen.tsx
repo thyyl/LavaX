@@ -2,12 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { useQuery } from 'react-apollo';
-import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import DetailsContainer from './components/DetailsContainer';
 import RocketContainer from './components/RocketContainer';
 import ErrorScreen from '../ErrorScreen/ErrorScreen';
+import { GET_ROCKET_INFO } from '../../utils/graphql';
 
 const DetailsScreen = ({route}) => {
   const { itemId } = route.params;
@@ -42,30 +42,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
-
-const GET_ROCKET_INFO = gql`
-  query GET_ROCKET_INFO($itemId: ID!) {
-    rocket(id: $itemId) {
-      description
-      diameter {
-        meters
-      }
-      height {
-        meters
-      }
-      mass {
-        kg
-      }
-      name
-      engines {
-        type
-        version
-        number
-        layout
-      }
-      id
-    }
-  }
-`;
 
 export default DetailsScreen

@@ -1,38 +1,38 @@
 import React, { useState, useContext } from 'react'
 import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { useMutation } from 'react-apollo';
+import ApolloClient from 'apollo-boost';
 import Spinner from 'react-native-loading-spinner-overlay';
-import uuid from 'react-native-uuid';
 import { useToast } from "react-native-toast-notifications";
 
-import { AuthContext } from '../../../context/auth';
-import { POST_USER } from '../../../utils/graphql';
-import { UserInterface } from '../../../interface/userInterface';
+import { LocalAuthContext } from '../../../context/localAuth';
+import { CREATE_POST } from '../../../utils/graphql';
 
 const Form = () => {
-  const context = useContext(AuthContext);
+  const {user} = useContext(LocalAuthContext);
 
-  const [name, setName] = useState("");
-  const [rocket, setRocket] = useState("");
-  const [twitter, setTwitter] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const toast = useToast();
 
-  const [addUser, { loading }] = useMutation(POST_USER, {
+  const client = new ApolloClient<{}>({
+    uri: 'http://192.168.0.169:3000/graphql',
+  })
+
+  const [addUser, { loading }] = useMutation(CREATE_POST, {
     update(_, result) {
-      const user = result.data.insert_users.returning.find((info: UserInterface) => info.name === name);
-      console.log(user.id);
-      context.createUser(user.id);
+      console.log(result)
       toast.show("Create Successful");
-    }
+    },
+    client: client
   });
 
   const handleOnPress = () => {
-    if (name.trim() === "" || rocket.trim() === "" || twitter.trim() === "")
+    if (title.trim() === "" || description.trim() === "")
       toast.show("Please ensure all fields are filled!");
     else {
-      const id = uuid.v4();
-      addUser({ variables: { id, name, rocket, twitter } })
+      addUser({ variables: { user, title, description } })
     }
   }
 
@@ -46,37 +46,25 @@ const Form = () => {
     <View style={styled.container}>
       <View style={styled.inputContainer}>
         <Text style={styled.textFieldLabel}>
-          Name
+          Title
         </Text>
         <TextInput
-          value={name}
+          value={title}
           style={styled.textFieldInput}
-          onChangeText={text => setName(text)}
-          placeholder="Enter your name"
+          onChangeText={text => setTitle(text)}
+          placeholder="Enter your title"
       />
       </View>
 
       <View style={styled.inputContainer}>
         <Text style={styled.textFieldLabel}>
-          Rocket
+          Desc
         </Text>
         <TextInput
-          value={rocket}
+          value={description}
           style={styled.textFieldInput}
-          onChangeText={text => setRocket(text)}
-          placeholder="Enter your rocket"
-      />
-      </View>
-
-      <View style={styled.inputContainer}>
-        <Text style={styled.textFieldLabel}>
-          Twitter
-        </Text>
-        <TextInput
-          value={twitter}
-          style={styled.textFieldInput}
-          onChangeText={text => setTwitter(text)}
-          placeholder="Enter your twitter"
+          onChangeText={text => setDescription(text)}
+          placeholder="Enter your description"
       />
       </View>
 
@@ -84,7 +72,7 @@ const Form = () => {
         style={styled.button}
         onPress={handleOnPress}
       > 
-        <Text style={styled.buttonText}>Welcome to SpaceX</Text>
+        <Text style={styled.buttonText}>Post it!</Text>
       </Pressable>
     </View>
   )

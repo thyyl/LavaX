@@ -42,13 +42,8 @@ export class PostsService {
     return post
   }
 
-  public getPosts(getAllPostArgs: GetAllPostArgs): Post[] {
-    const posts = this.posts.filter(post => post.userID === getAllPostArgs.userID)
-
-    if (posts.length < 0)
-      throw new Error("Post not found!")
-    else 
-      return this.posts
+  public getPosts(): Post[] {
+    return this.posts
   }
 
   public deletePost(getPostArgs: GetPostArgs): Post {

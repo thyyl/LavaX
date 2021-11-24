@@ -1,15 +1,16 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { useQuery } from 'react-apollo';
-import gql from 'graphql-tag';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import HistoryContainer from './HistoryContainer'
+import { GET_PAST_HISTORIES } from '../../../utils/graphql';
+import { Launch } from '../../../interface/launchInterface';
 
 const HistoryDetails = ({rocketName}) => {
 
   const { data, loading } = useQuery(GET_PAST_HISTORIES);
-  let filteredData;
+  let filteredData: [Launch];
 
   if (loading) 
     return <Spinner
@@ -18,8 +19,11 @@ const HistoryDetails = ({rocketName}) => {
     />
 
   if (data) {
-    filteredData = data && data.launchesPast.filter((info) => info.rocket.rocket_name === rocketName)
+    filteredData = 
+      data && data.launchesPast.filter((info: Launch) => info.rocket.rocket_name === rocketName)
   }
+
+  console.log(data)
   
   return (
     <ScrollView style={styles.container}>
@@ -31,22 +35,6 @@ const HistoryDetails = ({rocketName}) => {
     </ScrollView>
   )
 }
-
-const GET_PAST_HISTORIES = gql` {
-  launchesPast {
-    id
-    mission_name
-    links {
-      article_link
-    }
-    launch_date_utc
-    rocket {
-      rocket_name
-    }
-    id
-  }
-}
-`
 
 const styles = StyleSheet.create({
   container: {

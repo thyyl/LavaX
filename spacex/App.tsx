@@ -6,6 +6,7 @@ import { ApolloProvider } from 'react-apollo'
 import { ToastProvider } from 'react-native-toast-notifications'
 
 import { AuthProvider } from './context/auth'
+import { LocalAuthProvider } from './context/localAuth';
 
 import DetailsScreen from './screens/DetailsScreen/DetailsScreen';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
@@ -15,6 +16,8 @@ import FilteredSearchScreen from './screens/FilteredSearchScreen/FilteredSearchS
 import MissionScreen from './screens/MissionScreen/MissionScreen';
 import PostUserScreen from './screens/PostUserScreen/PostUserScreen';
 import UpdateUserScreen from './screens/UpdateUserScreen/UpdateUserScreen';
+import PostScreen from './screens/PostScreen/PostScreen';
+import AddPostScrren from './screens/AddPostScreen/AddPostScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -26,6 +29,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <LocalAuthProvider>
       <AuthProvider>
         <ToastProvider>
           <ApolloProvider client={spaceX} >
@@ -37,11 +41,14 @@ export default function App() {
               <HomeStack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
               <HomeStack.Screen name='PostUser' component={PostUserScreen} options={{headerShown: false}}/>
               <HomeStack.Screen name='UpdateUser' component={UpdateUserScreen} options={{headerShown: false}}/>
+              <HomeStack.Screen name='Post' component={PostScreen} options={{headerShown: false}}/>
+              <HomeStack.Screen name='AddPost' component={AddPostScrren} options={{headerShown: false}}/>
               <HomeStack.Screen name='Mission' component={MissionScreen} options={{headerShown: false}}/>
             </HomeStack.Navigator>
           </ApolloProvider>
         </ToastProvider>
       </AuthProvider>
+      </LocalAuthProvider>
     </NavigationContainer>
   );
 }

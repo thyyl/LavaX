@@ -1,35 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, TextInput, StyleSheet, Text, Pressable } from 'react-native'
-import gql from 'graphql-tag';
 import { useToast } from "react-native-toast-notifications";
 import ApolloClient from 'apollo-boost';
 import { useMutation } from 'react-apollo';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const RegisterForm = ({navigation}) => {
+import { LocalAuthContext } from '../../../context/localAuth';
+import { LOGIN_USER } from '../../../utils/graphql';
+
+const LoginForm = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const toast = useToast();
+  const context = useContext(LocalAuthContext);
 
   const handleOnSubmit = () => {
-    if (email.trim() === "" || password.trim() === "" || confirmPassword.trim() === "") 
+    if (email.trim() === "" || password.trim() === "") 
       toast.show("Please ensure all fields are filled!");
     else 
-      registerUser({ variables: { email, password } });
+      loginUser({ variables: { email, password } });
   }
 
-  const client = new ApolloClient({
+  const client = new ApolloClient<{}>({
     uri: 'http://192.168.0.169:3000/graphql',
   })
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, result) {
-      console.log(result.data.createUser.email);
-      toast.show("Registered!");
+      context.createUser(result.data.validate.userID);
+      toast.show("Login!");
       navigation.navigate('Home');
     },
-    client: client
+    client: client,
+    onError() {
+      toast.show("Wrong credentials!")
+    }
   });
 
   if (loading)
@@ -65,37 +70,15 @@ const RegisterForm = ({navigation}) => {
       />
       </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.textFieldLabel}>
-          Cofirmation
-        </Text>
-        <TextInput
-        value={confirmPassword}
-        secureTextEntry={true}
-        style={styles.textFieldInput}
-        onChangeText={text => setConfirmPassword(text)}
-        placeholder="Confirm your password"
-      />
-      </View>
-
       <Pressable
         style={styles.button}
         onPress={handleOnSubmit}
       > 
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>Sign In</Text>
       </Pressable>
-    </View>     
+    </View>
   )
 }
-
-const REGISTER_USER = gql`
-  mutation REGISTER_USER($email: String!, $password: String!){
-    createUser(createUserData: {email: $email, password: $password}) {
-      userID
-      email
-    }
-  }
-`;
 
 const styles = StyleSheet.create({
   container: {
@@ -119,7 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   textFieldInput: {
-    width: '65%',
+    width: '70%',
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -145,4 +128,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default RegisterForm
+export default LoginForm
