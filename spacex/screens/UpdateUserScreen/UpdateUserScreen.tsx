@@ -14,7 +14,7 @@ const UpdateUserScreen = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
         <Text style={styles.titleHeader}>Let's update your details</Text>
-        <Form user={user} updateUser={updateUser}/>
+        <Form user={user} updateUser={updateUser} />
       </SafeAreaView>
     )
   

@@ -13,7 +13,8 @@ const Form = ({user, updateUser}) => {
   const [twitter, setTwitter] = useState("");
   const toast = useToast();
 
-  const [udpateUser, {data, loading, error}] = useMutation(UPDATE_USER, {
+
+  const [graphqlUpdate, { loading, error}] = useMutation(UPDATE_USER, {
     update(_, result) {
       const user = result.data.update_users.returning.find((info) => info.name === name);
       console.log(user.id);
@@ -22,7 +23,14 @@ const Form = ({user, updateUser}) => {
     }
   });
 
-  const userID = user.id;
+  const handleOnPress = () => {
+    if (name.trim() === "" || rocket.trim() === "" || twitter.trim() === "")
+      toast.show("Please ensure all fields are filled!");
+    else {
+      const userID = user;
+      graphqlUpdate({ variables: { userID, name, rocket, twitter } })
+    }
+  }
 
   if (loading) 
     return <Spinner
@@ -73,9 +81,9 @@ const Form = ({user, updateUser}) => {
 
       <Pressable
         style={styled.button}
-        onPress={() => udpateUser({ variables: { userID, name, rocket, twitter } })}
+        onPress={handleOnPress}
       > 
-        <Text style={styled.buttonText}>Welcome to SpaceX</Text>
+        <Text style={styled.buttonText}>Update Me!</Text>
       </Pressable>
     </View>
   )
@@ -134,7 +142,7 @@ const styled = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 15
-  }
+  },
 });
 
 export default Form

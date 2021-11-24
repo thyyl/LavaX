@@ -17,9 +17,7 @@ const Form = () => {
 
   const toast = useToast();
 
-  const id = uuid.v4();
-
-  const [addUser, { loading, error}] = useMutation(POST_USER, {
+  const [addUser, { loading }] = useMutation(POST_USER, {
     update(_, result) {
       const user = result.data.insert_users.returning.find((info) => info.name === name);
       console.log(user.id);
@@ -27,6 +25,15 @@ const Form = () => {
       toast.show("Create Successful");
     }
   });
+
+  const handleOnPress = () => {
+    if (name.trim() === "" || rocket.trim() === "" || twitter.trim() === "")
+      toast.show("Please ensure all fields are filled!");
+    else {
+      const id = uuid.v4();
+      addUser({ variables: { id, name, rocket, twitter } })
+    }
+  }
 
   if (loading) 
     return <Spinner
@@ -76,7 +83,7 @@ const Form = () => {
 
       <Pressable
         style={styled.button}
-        onPress={() => addUser({ variables: { id, name, rocket, twitter } })}
+        onPress={handleOnPress}
       > 
         <Text style={styled.buttonText}>Welcome to SpaceX</Text>
       </Pressable>
