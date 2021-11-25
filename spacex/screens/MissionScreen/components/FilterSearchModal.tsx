@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TextInput, Modal, Pressable } from 'react-nativ
 import { useToast } from "react-native-toast-notifications";
 import { Launch } from '../../../interface/launchInterface';
 
-const FilterSearchModal = ({modalVisible, setModalVisible, data}) => {
+const FilterSearchModal = ({modalVisible, setModalVisible, filteredData}) => {
   const toast = useToast();
 
   const [rocket, setRocket] = useState('');
@@ -16,9 +16,7 @@ const FilterSearchModal = ({modalVisible, setModalVisible, data}) => {
       toast.show("Year must be a digit");
     else {
       setModalVisible(!modalVisible);
-      data = data.launchesPast.map(
-        (info: Launch) => info.rocket.rocket_name === rocket && info.launch_year === year
-      )
+      filteredData(rocket, year);
     }
 
     setRocket('');

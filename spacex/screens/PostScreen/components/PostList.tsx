@@ -16,7 +16,6 @@ const PostList = ({postsData}) => {
   }, []);
 
   useEffect(() => {
-    post && console.log(post)
     post && setPosts([...posts, post]);
     removePost();
   }, [post])
@@ -26,7 +25,6 @@ const PostList = ({postsData}) => {
   }, [posts]);
 
   const postDeleted = (id: string) => {
-    console.log(id);
     const newPost = posts.filter(post => post.postID !== id);
     setPosts(newPost);
     console.log(newPost.length)

@@ -10,11 +10,20 @@ import ErrorScreen from '../ErrorScreen/ErrorScreen';
 import EmptyScreen from '../EmptyScreen/EmptyScreen';
 import { GET_MISSION_INFO } from '../../utils/graphql';
 import FilterSearchModal from './components/FilterSearchModal';
+import { Launch } from '../../interface/launchInterface';
 
 const MissionScreen = ({route}) => {
   const { missionName } = route.params;
   const [page, setPage] = useState(0);
-  // const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [launches, setLaunches] = useState([]);
+
+  const filteredData = (rocket: string, year: string) => {
+    const newLaunches = launches.filter(
+      (launch: Launch) => launch.rocket.rocket_name === rocket && launch.launch_year === year
+    )
+    setLaunches(newLaunches);
+  }
 
   const nextPage = () => {
     if (data.launchesPast.length !== 0 )
@@ -41,9 +50,23 @@ const MissionScreen = ({route}) => {
   if (error)
     return <ErrorScreen />
 
+  useEffect(() => {
+    data && setLaunches(data.launchesPast)
+  }, [])
+
+  useEffect(() => {
+    console.log(launches)
+  }, [launches])
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
+
+      <FilterSearchModal
+        modalVisible={modalVisible} 
+        setModalVisible={setModalVisible}
+        filteredData={filteredData}
+      />
 
       <View style={styles.titleRow}>
         <TouchableOpacity onPress={backPage}>
@@ -57,13 +80,13 @@ const MissionScreen = ({route}) => {
         </TouchableOpacity>
       </View>
 
-      {/* <TouchableOpacity onPress={() => setModalVisible(true)}>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
         <Text style={styles.filterText}>Filter</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       {
-        data.launchesPast.length !== 0 
-        ? <MissionList launches={data.launchesPast} />
+        launches.length !== 0 
+        ? <MissionList launches={launches} />
         : <EmptyScreen />
       }
     </SafeAreaView>

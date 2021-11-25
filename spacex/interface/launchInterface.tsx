@@ -6,12 +6,11 @@ interface Rocket {
   rocket_name: String
 }
 
-interface Launch {
+export interface Launch {
   id: string,
   launch_year: String,
   links: Link,
   mission_name: String,
   rocket: Rocket,
+  launch_date_utc: String,
 }
-
-export {Launch}
