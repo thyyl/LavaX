@@ -151,8 +151,8 @@ const FIND_ALL_POST = gql`
 `;
 
 const DELETE_POST = gql`
-  mutation DELETE_POST($postID: String!) {
-    deletePost(postID: $postID) {
+  mutation DELETE_POST($postID: String!, $user: String!) {
+    deletePost(postID: $postID, userID: $user) {
       postID
     }
   }

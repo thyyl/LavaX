@@ -47,12 +47,15 @@ export class PostsService {
   }
 
   public deletePost(getPostArgs: GetPostArgs): Post {
-    const post = this.posts.find(post => post.postID !== getPostArgs.postID)
+    const post = this.posts.find(post => post.postID === getPostArgs.postID)
 
     if (!post)
       throw new Error("Post not found!")
     else {
-      this.posts = this.posts.filter(post => post.postID !== getPostArgs.postID)
+      if (post.postID !== getPostArgs.userID)
+        throw new Error("You can't delete it!")
+      else 
+        this.posts = this.posts.filter(post => post.postID !== getPostArgs.postID)
     }
 
     return post;

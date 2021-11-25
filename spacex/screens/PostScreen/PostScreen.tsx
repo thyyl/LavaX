@@ -7,7 +7,6 @@ import ApolloClient from 'apollo-boost';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { FIND_ALL_POST } from '../../utils/graphql';
-import EmptyScreen from '../EmptyScreen/EmptyScreen';
 import PostList from './components/PostList';
 
 const PostScreen = ({navigation}) => {
@@ -34,9 +33,7 @@ const PostScreen = ({navigation}) => {
               </TouchableOpacity>
             </View>
             {
-              data && data.posts.length > 0 
-              ? <PostList postsData={data.posts}/>
-              : <EmptyScreen />
+              data && <PostList postsData={data.posts}/>
             }
           </SafeAreaView>
         )

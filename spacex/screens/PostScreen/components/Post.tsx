@@ -1,13 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import ApolloClient from 'apollo-boost';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useToast } from "react-native-toast-notifications";
 import { useMutation } from 'react-apollo';
+
+import { LocalAuthContext } from '../../../context/localAuth';
 import { DELETE_POST } from '../../../utils/graphql';
 
 const Post = ({post, postID, postDeleted}) => {
+  const {user} = useContext(LocalAuthContext);
+
   const client = new ApolloClient<{}>({
     uri: 'http://192.168.0.169:3000/graphql',
   })
@@ -18,13 +22,16 @@ const Post = ({post, postID, postDeleted}) => {
     update(_, result) {
       console.log(result)
       toast.show("Deleted Successfully");
+      postDeleted(postID);
     },
-    client: client
+    client: client,
+    onError() {
+      toast.show("This is not your post");
+    }
   });
 
   const handleOnDelete = () => {
-    deletePost({ variables: { postID } })
-    postDeleted(postID)
+    deletePost({ variables: { postID, user} })
   }
 
   if (loading) 

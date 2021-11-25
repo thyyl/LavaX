@@ -4,12 +4,12 @@ import { ScrollView, StyleSheet } from 'react-native'
 import { PostContext } from '../../../context/post';
 
 import { PostInterface } from '../../../interface/postInterface';
+import EmptyScreen from '../../EmptyScreen/EmptyScreen';
 import Post from './Post'
 
 const PostList = ({postsData}) => {
   const {post, removePost} = useContext(PostContext)
   const [posts, setPosts] = useState([]);
-
 
   useEffect(() => {
     setPosts(postsData);
@@ -20,10 +20,6 @@ const PostList = ({postsData}) => {
     removePost();
   }, [post])
 
-  useEffect(() => {
-
-  }, [posts]);
-
   const postDeleted = (id: string) => {
     const newPost = posts.filter(post => post.postID !== id);
     setPosts(newPost);
@@ -33,11 +29,15 @@ const PostList = ({postsData}) => {
   return (
     <ScrollView style={styles.container}>
       {
-        posts.map((post: PostInterface) => {
-          return (
-            <Post post={post} key={post.postID} postID={post.postID} postDeleted={postDeleted}/>
-          )
-        })  
+        posts && posts.length > 0  
+
+        ? posts.map((post: PostInterface) => {
+            return (
+              <Post post={post} key={post.postID} postID={post.postID} postDeleted={postDeleted}/>
+            )
+          })  
+
+        : <EmptyScreen />
       }
     </ScrollView>
   )

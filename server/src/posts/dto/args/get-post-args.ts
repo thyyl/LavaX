@@ -6,4 +6,8 @@ export class GetPostArgs {
   @Field()
   @IsNotEmpty()
   postID: string;
+
+  @Field()
+  @IsNotEmpty()
+  userID: string;
 }
