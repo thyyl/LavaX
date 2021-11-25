@@ -52,7 +52,7 @@ export class PostsService {
     if (!post)
       throw new Error("Post not found!")
     else {
-      if (post.postID !== getPostArgs.userID)
+      if (post.userID !== getPostArgs.userID)
         throw new Error("You can't delete it!")
       else 
         this.posts = this.posts.filter(post => post.postID !== getPostArgs.postID)

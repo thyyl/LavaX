@@ -1,16 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import { StyleSheet, SafeAreaView, Text, View, TouchableOpacity } from 'react-native'
 import { useQuery } from 'react-apollo';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Ionicons } from '@expo/vector-icons';
 
 import MissionList from './components/MissionList';
-import ErrorScreen from '../ErrorScreen/ErrorScreen';
 import EmptyScreen from '../EmptyScreen/EmptyScreen';
 import { GET_MISSION_INFO } from '../../utils/graphql';
 import FilterSearchModal from './components/FilterSearchModal';
 import { Launch } from '../../interface/launchInterface';
+import ErrorScreen from '../ErrorScreen/ErrorScreen';
 
 const MissionScreen = ({route}) => {
   const { missionName } = route.params;
@@ -18,16 +18,11 @@ const MissionScreen = ({route}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [launches, setLaunches] = useState([]);
 
-  const filteredData = (rocket: string, year: string) => {
-    const newLaunches = launches.filter(
-      (launch: Launch) => launch.rocket.rocket_name === rocket && launch.launch_year === year
-    )
-    setLaunches(newLaunches);
-  }
-
   const nextPage = () => {
-    if (data.launchesPast.length !== 0 )
+    if (data.launchesPast.length !== 0)
       setPage(page + 3);
+    else 
+      return
   }
 
   const backPage = () => {
@@ -39,24 +34,23 @@ const MissionScreen = ({route}) => {
 
   const { data, loading, error } = useQuery(GET_MISSION_INFO, {
     variables: { missionName, page },
+    onCompleted: setLaunches
   });
 
   if (loading) 
     return <Spinner
       visible={loading}
-      textContent={'Loading...'}
+      textContent={'Loading...'}  
     />
 
-  if (error)
+  if (error) 
     return <ErrorScreen />
 
-  useEffect(() => {
-    data && setLaunches(data.launchesPast)
-  }, [])
-
-  useEffect(() => {
-    console.log(launches)
-  }, [launches])
+  const filteredData = (rocket, year) => {
+    data.launchesPast = launches.filter(
+      (launch) => launch.rocket.rocket_name === rocket && launch.launch_year === year
+    )
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,8 +79,8 @@ const MissionScreen = ({route}) => {
       </TouchableOpacity>
 
       {
-        launches.length !== 0 
-        ? <MissionList launches={launches} />
+        data.launchesPast.length !== 0 
+        ? <MissionList launches={data.launchesPast} />
         : <EmptyScreen />
       }
     </SafeAreaView>
