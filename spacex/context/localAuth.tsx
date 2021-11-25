@@ -1,40 +1,21 @@
-import React, { useReducer, createContext } from "react";
-
-const LocalAuthContext = createContext({
-  user: null,
-  createUser: (data: string) => {},
-  removeUser: () => {},
-})
-
-function localAuthReducer(state, action) {
-  switch(action.type) {
-    case 'CREATE':
-      return {
-        ...state,
-        user: action.payload
-      }
-
-    case 'REMOVE':
-      return {
-        ...state,
-        user: null,
-      }
-  }
-}
+import React, { useReducer } from "react";
+import { ActionType } from "./localAuth/action";
+import { LocalAuthContext } from "./localAuth/context";
+import { localAuthReducer } from "./localAuth/reducer";
 
 function LocalAuthProvider(props) {
   const [state, dispatch] = useReducer(localAuthReducer, { user: null });
 
   function createUser(data: string) {
     dispatch({
-      type: 'CREATE',
+      type: ActionType.CreateUser,
       payload: data
     })
   }
 
   function removeUser() {
     dispatch({
-      type: 'REMOVE',
+      type: ActionType.RemoveUser,
     })
   }
 

@@ -1,54 +1,28 @@
-import React, { useReducer, createContext } from "react";
-
-const AuthContext = createContext({
-  user: null,
-  createUser: (data: string) => {},
-  updateUser: (data: string) => {},
-  removeUser: () => {},
-})
-
-function authReducer(state, action) {
-  switch(action.type) {
-    case 'CREATE':
-      return {
-        ...state,
-        user: action.payload
-      }
-    
-    case 'UPDATE':
-      return {
-        ...state,
-        user: action.payload
-      }
-
-    case 'REMOVE':
-      return {
-        ...state,
-        user: null,
-      }
-  }
-}
+import React, { useReducer } from "react";
+import { ActionType } from "./auth/action";
+import { AuthContext } from "./auth/context";
+import { AuthReducer } from "./auth/reducer";
 
 function AuthProvider(props) {
-  const [state, dispatch] = useReducer(authReducer, { user: null });
+  const [state, dispatch] = useReducer(AuthReducer, { user: null });
 
   function createUser(data: string) {
     dispatch({
-      type: 'CREATE',
+      type: ActionType.CreateUser,
       payload: data
     })
   }
 
   function updateUser(data: string) {
     dispatch({
-      type: 'UPDATE',
+      type: ActionType.UpdateUser,
       payload: data
     })
   }
 
   function removeUser() {
     dispatch({
-      type: 'REMOVE',
+      type: ActionType.RemoveUser,
     })
   }
 
