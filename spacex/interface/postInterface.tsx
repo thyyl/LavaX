@@ -1,5 +1,5 @@
 export interface PostInterface {
-  postID: string,
-  title: String,
-  description: String
+  postID: string;
+  title: String;
+  description: String;
 }
